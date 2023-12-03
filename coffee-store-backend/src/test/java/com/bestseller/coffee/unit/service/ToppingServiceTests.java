@@ -3,14 +3,13 @@ package com.bestseller.coffee.unit.service;
 import com.bestseller.coffee.constant.CoffeeConstants;
 import com.bestseller.coffee.dto.request.topping.CreateToppingDto;
 import com.bestseller.coffee.dto.request.topping.UpdateToppingDto;
-import com.bestseller.coffee.dto.response.topping.CreatedToppingDto;
-import com.bestseller.coffee.dto.response.topping.DeletedToppingDto;
-import com.bestseller.coffee.dto.response.topping.UpdatedToppingDto;
+import com.bestseller.coffee.dto.response.topping.*;
 import com.bestseller.coffee.entity.Topping;
 import com.bestseller.coffee.enums.Status;
 import com.bestseller.coffee.exception.ToppingAlreadyExistException;
 import com.bestseller.coffee.exception.ToppingNotFoundException;
 import com.bestseller.coffee.mapper.DtoToEntityMapper;
+import com.bestseller.coffee.repository.ToppingOrderRepository;
 import com.bestseller.coffee.repository.ToppingRepository;
 import com.bestseller.coffee.service.ToppingService;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,9 +19,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.projection.ProjectionFactory;
+import org.springframework.data.projection.SpelAwareProxyProjectionFactory;
 
 import java.math.BigDecimal;
-import java.util.Optional;
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -34,6 +35,9 @@ public class ToppingServiceTests {
 
     @Mock
     private ToppingRepository toppingRepository;
+
+    @Mock
+    private ToppingOrderRepository toppingOrderRepository;
 
     @InjectMocks
     private ToppingService toppingService;
@@ -172,5 +176,33 @@ public class ToppingServiceTests {
 
         // then
         verify(toppingRepository, never()).save(any(Topping.class));
+    }
+
+    @DisplayName("unit service test - find most used toppings successfully")
+    @Test
+    public void givenEmptyEmployeesList_whenGetAllEmployees_thenReturnEmptyEmployeesList(){
+
+        // given - precondition or setup
+        List<IMostUsedToppings> mostUsedToppings = new ArrayList<>();
+
+        Map<String, Object> backingMap = new HashMap<>();
+        backingMap.put("toppingName", "Milk");
+        backingMap.put("toppingId", 1l);
+        backingMap.put("count", 1);
+
+        ProjectionFactory factory = new SpelAwareProxyProjectionFactory();
+        IMostUsedToppings iMostUsedToppings = factory.createProjection(IMostUsedToppings.class,backingMap);
+        System.out.println(iMostUsedToppings);
+        mostUsedToppings.add(iMostUsedToppings);
+
+        given(toppingOrderRepository.findMostUsedToppings()).willReturn(mostUsedToppings);
+
+        // when -  action or the behaviour that we are going test
+        MostUsedToppingsDto lMostUsedToppings = toppingService.findMostUsedToppings();
+
+        // then - verify the output
+        assertThat(lMostUsedToppings).isNotNull();
+        assertThat(lMostUsedToppings.getMostUsedToppings()).hasSizeGreaterThan(0);
+        assertThat(lMostUsedToppings.getMostUsedToppings().stream().findFirst().get().getToppingName()).isEqualTo("Milk");
     }
 }

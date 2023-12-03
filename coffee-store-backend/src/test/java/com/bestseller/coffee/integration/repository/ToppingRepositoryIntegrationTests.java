@@ -22,7 +22,7 @@ public class ToppingRepositoryIntegrationTests extends AbstractContainerBaseTest
     private ToppingRepository toppingRepository;
 
     @Test
-    @DisplayName("DataJpaTest - save topping test")
+    @DisplayName("mysql container test - save topping test")
     public void givenToppingObject_whenSave_thenReturnSavedTopping(){
 
         //given - precondition or setup
@@ -40,7 +40,7 @@ public class ToppingRepositoryIntegrationTests extends AbstractContainerBaseTest
     }
 
     @Test
-    @DisplayName("DataJpaTest - findByStatusAndName topping test")
+    @DisplayName("mysql container test - findByStatusAndName topping test")
     public void givenDrinkId_whenFindByName_thenReturnDrinkObject(){
 
         //given - precondition or setup
@@ -60,7 +60,7 @@ public class ToppingRepositoryIntegrationTests extends AbstractContainerBaseTest
     }
 
     @Test
-    @DisplayName("DataJpaTest - findByStatusAndId topping test")
+    @DisplayName("mysql container test - findByStatusAndId topping test")
     public void givenToppingId_whenFindById_thenReturnToppingObject(){
 
         //given - precondition or setup
