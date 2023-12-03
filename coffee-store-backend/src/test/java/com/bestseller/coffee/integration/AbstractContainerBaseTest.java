@@ -1,8 +1,11 @@
 package com.bestseller.coffee.integration;
 
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.MySQLContainer;
+
+@ActiveProfiles("test")
 public class AbstractContainerBaseTest {
 
     static final MySQLContainer MY_SQL_CONTAINER;

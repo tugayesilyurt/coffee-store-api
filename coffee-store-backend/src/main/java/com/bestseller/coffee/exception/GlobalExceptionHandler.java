@@ -45,4 +45,25 @@ public class GlobalExceptionHandler {
         return problemDetail;
     }
 
+    @ExceptionHandler({ToppingAlreadyExistException.class})
+    public ProblemDetail handleToppingAlreadyExistException(RuntimeException exception,
+                                                            final HttpServletRequest request) {
+        log.error("ToppingAlreadyExistException : " + exception.getMessage()
+                +" - Path : " + request.getServletPath());
+
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, exception.getMessage());
+        problemDetail.setTitle("ToppingAlreadyExistException");
+        return problemDetail;
+    }
+
+    @ExceptionHandler({ToppingNotFoundException.class})
+    public ProblemDetail handleToppingNotFoundException(RuntimeException exception,
+                                                        final HttpServletRequest request) {
+        log.error("ToppingNotFoundException : " + exception.getMessage()
+                +" - Path : " + request.getServletPath());
+
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, exception.getMessage());
+        problemDetail.setTitle("ToppingNotFoundException");
+        return problemDetail;
+    }
 }
