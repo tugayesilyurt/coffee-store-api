@@ -4,7 +4,9 @@ import com.bestseller.coffee.constant.CoffeeConstants;
 import com.bestseller.coffee.dto.request.topping.CreateToppingDto;
 import com.bestseller.coffee.dto.request.topping.UpdateToppingDto;
 import com.bestseller.coffee.entity.Topping;
+import com.bestseller.coffee.entity.ToppingOrder;
 import com.bestseller.coffee.integration.AbstractContainerBaseTest;
+import com.bestseller.coffee.repository.ToppingOrderRepository;
 import com.bestseller.coffee.repository.ToppingRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,6 +22,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import java.math.BigDecimal;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -34,6 +37,9 @@ public class ToppingControllerIntegrationTests extends AbstractContainerBaseTest
 
     @Autowired
     private ToppingRepository toppingRepository;
+
+    @Autowired
+    private ToppingOrderRepository toppingOrderRepository;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -111,6 +117,32 @@ public class ToppingControllerIntegrationTests extends AbstractContainerBaseTest
                 andExpect(status().isOk())
                 .andExpect(jsonPath("$.message",
                         is(CoffeeConstants.deletedTopping)));
+
+    }
+
+    @Test
+    @DisplayName("integration test - find most used toppings successfully")
+    public void givenNothing_whenGetMostUsedToppings_thenReturnMostUsedToppingsDto() throws Exception{
+
+        // given - precondition or setup
+        ToppingOrder toppingOrder = ToppingOrder.builder()
+                .orderId(1l)
+                .toppingId(1l)
+                .toppingAmount(new BigDecimal("2"))
+                .toppingName("Milk")
+                .drinkId(1l)
+                .build();
+
+        toppingOrderRepository.save(toppingOrder);
+
+        // when - action or behaviour that we are going test
+        ResultActions response = mockMvc.perform(get("/v1/toppings/most-used")
+                .contentType(MediaType.APPLICATION_JSON));
+
+        // then - verify the result or output using assert statements
+        response.andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.mostUsedToppings", hasSize(1)));;
 
     }
 

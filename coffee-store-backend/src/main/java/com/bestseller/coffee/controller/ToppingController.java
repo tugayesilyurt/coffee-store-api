@@ -5,6 +5,7 @@ import com.bestseller.coffee.dto.request.topping.CreateToppingDto;
 import com.bestseller.coffee.dto.request.topping.UpdateToppingDto;
 import com.bestseller.coffee.dto.response.topping.CreatedToppingDto;
 import com.bestseller.coffee.dto.response.topping.DeletedToppingDto;
+import com.bestseller.coffee.dto.response.topping.MostUsedToppingsDto;
 import com.bestseller.coffee.dto.response.topping.UpdatedToppingDto;
 import com.bestseller.coffee.service.ToppingService;
 import jakarta.validation.Valid;
@@ -38,5 +39,11 @@ public class ToppingController {
     public ResponseEntity<?> deleteTopping(@PathVariable("id") @NotNull Long id){
         DeletedToppingDto response = toppingService.deleteTopping(id);
         return new ResponseEntity<DeletedToppingDto>(response,HttpStatus.OK);
+    }
+
+    @GetMapping("/most-used")
+    public ResponseEntity<?> getMostUsedToppings(){
+        MostUsedToppingsDto response = toppingService.findMostUsedToppings();
+        return new ResponseEntity<MostUsedToppingsDto>(response,HttpStatus.OK);
     }
 }

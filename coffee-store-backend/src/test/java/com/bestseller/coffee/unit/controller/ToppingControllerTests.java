@@ -4,9 +4,7 @@ import com.bestseller.coffee.constant.CoffeeConstants;
 import com.bestseller.coffee.controller.ToppingController;
 import com.bestseller.coffee.dto.request.topping.CreateToppingDto;
 import com.bestseller.coffee.dto.request.topping.UpdateToppingDto;
-import com.bestseller.coffee.dto.response.topping.CreatedToppingDto;
-import com.bestseller.coffee.dto.response.topping.DeletedToppingDto;
-import com.bestseller.coffee.dto.response.topping.UpdatedToppingDto;
+import com.bestseller.coffee.dto.response.topping.*;
 import com.bestseller.coffee.exception.ToppingAlreadyExistException;
 import com.bestseller.coffee.exception.ToppingNotFoundException;
 import com.bestseller.coffee.service.ToppingService;
@@ -21,8 +19,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -187,5 +188,37 @@ public class ToppingControllerTests {
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.detail", is(CoffeeConstants.toppingNotFound)));
 
+    }
+
+    @Test
+    @DisplayName("unit test - get most used toppings successfully")
+    public void givenNothing_whenGetMostUsedToppings_thenReturnMostUsedToppingsList() throws Exception {
+
+        // given - precondition or setup
+        MostUsedToppingsDto mostUsedToppingsDto = getMostUsedToppingsDto();
+
+        given(toppingService.findMostUsedToppings()).willReturn(mostUsedToppingsDto);
+
+        // when - action or behaviour that we are going test
+        ResultActions response = mockMvc.perform(get("/v1/toppings/most-used")
+                .contentType(MediaType.APPLICATION_JSON));
+
+        // then - verify the result or output using assert statements
+        response.andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.mostUsedToppings", hasSize(1)));
+
+    }
+
+    private static MostUsedToppingsDto getMostUsedToppingsDto() {
+        MostUsedToppingsDto mostUsedToppingsDto = new MostUsedToppingsDto();
+        List<MostUsedToppings> mostUsedToppingsList = new ArrayList<>();
+        MostUsedToppings mostUsedToppings = new MostUsedToppings();
+        mostUsedToppings.setToppingId(1l);
+        mostUsedToppings.setToppingName("Milk");
+        mostUsedToppings.setCount(5);
+        mostUsedToppingsList.add(mostUsedToppings);
+        mostUsedToppingsDto.setMostUsedToppings(mostUsedToppingsList);
+        return mostUsedToppingsDto;
     }
 }
