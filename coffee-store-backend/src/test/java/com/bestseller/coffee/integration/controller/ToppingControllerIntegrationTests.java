@@ -1,11 +1,11 @@
 package com.bestseller.coffee.integration.controller;
 
 import com.bestseller.coffee.constant.CoffeeConstants;
-import com.bestseller.coffee.dto.request.drink.CreateDrinkDto;
-import com.bestseller.coffee.dto.request.drink.UpdateDrinkDto;
-import com.bestseller.coffee.entity.Drink;
+import com.bestseller.coffee.dto.request.topping.CreateToppingDto;
+import com.bestseller.coffee.dto.request.topping.UpdateToppingDto;
+import com.bestseller.coffee.entity.Topping;
 import com.bestseller.coffee.integration.AbstractContainerBaseTest;
-import com.bestseller.coffee.repository.DrinkRepository;
+import com.bestseller.coffee.repository.ToppingRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -27,90 +27,91 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
-public class DrinkControllerIT extends AbstractContainerBaseTest {
+public class ToppingControllerIntegrationTests extends AbstractContainerBaseTest {
 
     @Autowired
     private MockMvc mockMvc;
 
     @Autowired
-    private DrinkRepository drinkRepository;
+    private ToppingRepository toppingRepository;
 
     @Autowired
     private ObjectMapper objectMapper;
 
     @BeforeEach
     void setup(){
-        drinkRepository.deleteAll();
+        toppingRepository.deleteAll();
     }
 
     @Test
-    @DisplayName("integration test - create drink successfully")
-    public void givenDrinkObject_whenCreateDrink_thenReturnSuccessfullyMessage() throws Exception{
+    @DisplayName("integration test - create topping successfully")
+    public void givenToppingObject_whenCreateTopping_thenReturnSuccessfullyMessage() throws Exception{
 
         // given - precondition or setup
-        CreateDrinkDto drinkDto = CreateDrinkDto.builder()
-                .name("Black Coffee")
+        CreateToppingDto toppingDto = CreateToppingDto.builder()
+                .name("Milk")
                 .amount(new BigDecimal("5"))
                 .build();
 
         // when - action or behaviour that we are going test
-        ResultActions response = mockMvc.perform(post("/v1/drinks")
+        ResultActions response = mockMvc.perform(post("/v1/toppings")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(drinkDto)));
+                .content(objectMapper.writeValueAsString(toppingDto)));
 
         // then - verify the result or output using assert statements
         response.andDo(print()).
                 andExpect(status().isCreated())
                 .andExpect(jsonPath("$.message",
-                        is(CoffeeConstants.createdDrink)));
+                        is(CoffeeConstants.createdTopping)));
 
     }
 
     @Test
-    @DisplayName("integration test - update drink successfully")
-    public void givenDrinkId_whenUpdateDrink_thenReturnSuccessfullyMessage() throws Exception{
+    @DisplayName("integration test - update topping successfully")
+    public void givenToppingId_whenUpdateTopping_thenReturnSuccessfullyMessage() throws Exception{
 
         // given - precondition or setup
-        UpdateDrinkDto drinkDto = UpdateDrinkDto.builder()
-                .name("Black Coffee")
-                .amount(new BigDecimal("10"))
+        UpdateToppingDto toppingDto = UpdateToppingDto.builder()
+                .name("Milk")
+                .amount(new BigDecimal("20"))
                 .build();
 
-        Drink willSaveDrink = Drink.builder().name("Black Coffee").amount(new BigDecimal("5"))
+        Topping willSaveTopping = Topping.builder().name("Milk").amount(new BigDecimal("30"))
                 .build();
-        drinkRepository.save(willSaveDrink);
+        toppingRepository.save(willSaveTopping);
 
         // when - action or behaviour that we are going test
-        ResultActions response = mockMvc.perform(put("/v1/drinks/{id}", willSaveDrink.getId())
+        ResultActions response = mockMvc.perform(put("/v1/toppings/{id}", willSaveTopping.getId())
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(drinkDto)));
+                .content(objectMapper.writeValueAsString(toppingDto)));
 
         // then - verify the result or output using assert statements
         response.andDo(print()).
                 andExpect(status().isOk())
                 .andExpect(jsonPath("$.message",
-                        is(CoffeeConstants.updatedDrink)));
+                        is(CoffeeConstants.updatedTopping)));
 
     }
 
     @Test
-    @DisplayName("integration test - delete drink successfully")
-    public void givenDrinkId_whenDeleteDrink_thenReturnSuccessfullyMessage() throws Exception{
+    @DisplayName("integration test - delete topping successfully")
+    public void givenToppingId_whenDeleteTopping_thenReturnSuccessfullyMessage() throws Exception{
 
         // given - precondition or setup
-        Drink willSaveDrink = Drink.builder().name("Black Coffee").amount(new BigDecimal("5"))
+        Topping willSaveTopping = Topping.builder().name("Milk").amount(new BigDecimal("5"))
                 .build();
-        drinkRepository.save(willSaveDrink);
+        toppingRepository.save(willSaveTopping);
 
         // when - action or behaviour that we are going test
-        ResultActions response = mockMvc.perform(delete("/v1/admin/drinks/{id}", willSaveDrink.getId())
+        ResultActions response = mockMvc.perform(delete("/v1/toppings/{id}", willSaveTopping.getId())
                 .contentType(MediaType.APPLICATION_JSON));
 
         // then - verify the result or output using assert statements
         response.andDo(print()).
                 andExpect(status().isOk())
                 .andExpect(jsonPath("$.message",
-                        is(CoffeeConstants.deletedDrink)));
+                        is(CoffeeConstants.deletedTopping)));
 
     }
+
 }
