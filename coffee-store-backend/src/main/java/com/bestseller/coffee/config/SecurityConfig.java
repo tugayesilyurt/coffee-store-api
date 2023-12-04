@@ -26,6 +26,7 @@ public class SecurityConfig {
 
         http.csrf(csrf -> csrf.disable()).authorizeHttpRequests((authorize) -> {
             authorize.requestMatchers(HttpMethod.POST, "/v1/orders").permitAll()
+                     .requestMatchers("/v3/api-docs/**", "/swagger-ui/**").permitAll()
             .anyRequest().authenticated();
         }).httpBasic(Customizer.withDefaults());
         return http.build();
