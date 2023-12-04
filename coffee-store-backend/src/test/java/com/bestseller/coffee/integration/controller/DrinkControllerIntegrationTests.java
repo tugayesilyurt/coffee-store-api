@@ -20,6 +20,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import java.math.BigDecimal;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -55,6 +56,7 @@ public class DrinkControllerIntegrationTests extends AbstractContainerBaseTest {
 
         // when - action or behaviour that we are going test
         ResultActions response = mockMvc.perform(post("/v1/drinks")
+                .with(httpBasic("admin","coffee"))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(drinkDto)));
 
@@ -82,6 +84,7 @@ public class DrinkControllerIntegrationTests extends AbstractContainerBaseTest {
 
         // when - action or behaviour that we are going test
         ResultActions response = mockMvc.perform(put("/v1/drinks/{id}", willSaveDrink.getId())
+                .with(httpBasic("admin","coffee"))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(drinkDto)));
 
@@ -104,6 +107,7 @@ public class DrinkControllerIntegrationTests extends AbstractContainerBaseTest {
 
         // when - action or behaviour that we are going test
         ResultActions response = mockMvc.perform(delete("/v1/drinks/{id}", willSaveDrink.getId())
+                .with(httpBasic("admin","coffee"))
                 .contentType(MediaType.APPLICATION_JSON));
 
         // then - verify the result or output using assert statements
