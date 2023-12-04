@@ -1,5 +1,6 @@
 package com.bestseller.coffee.unit.controller;
 
+import com.bestseller.coffee.config.SecurityConfig;
 import com.bestseller.coffee.constant.CoffeeConstants;
 import com.bestseller.coffee.controller.ToppingController;
 import com.bestseller.coffee.dto.request.topping.CreateToppingDto;
@@ -14,7 +15,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
@@ -32,6 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(ToppingController.class)
+@Import(SecurityConfig.class)
 public class ToppingControllerTests {
 
     @Autowired
@@ -46,6 +50,7 @@ public class ToppingControllerTests {
     // positive scenario - create topping
     @Test
     @DisplayName("unit test - create topping successfully")
+    @WithMockUser
     public void givenToppingObject_whenCreateToppings_thenReturnSuccessfullyMessage() throws Exception{
 
         // given - precondition or setup
@@ -75,6 +80,7 @@ public class ToppingControllerTests {
     // negative scenario - create topping
     @Test
     @DisplayName("unit test - create topping fail - already exist!")
+    @WithMockUser
     public void givenAlreadyExistTopping_whenCreateTopping_thenToppingAlreadyExistException () throws Exception {
         // given - precondition or setup
         CreateToppingDto toppingDto = CreateToppingDto.builder()
@@ -100,6 +106,7 @@ public class ToppingControllerTests {
     // positive scenario - update topping
     @Test
     @DisplayName("unit test - update topping successfully")
+    @WithMockUser
     public void givenUpdatedTopping_whenUpdateTopping_thenReturnSuccessfullyMessage() throws Exception{
         // given - precondition or setup
         Long id = 1l;
@@ -128,6 +135,7 @@ public class ToppingControllerTests {
     // negative scenario - update topping
     @Test
     @DisplayName("unit test - update topping fail - topping not found!")
+    @WithMockUser
     public void givenNoExistTopping_whenUpdateTopping_thenToppingNotFoundException () throws Exception {
         // given - precondition or setup
         Long id = 1l;
@@ -152,7 +160,8 @@ public class ToppingControllerTests {
     // positive scenario - delete topping
     @Test
     @DisplayName("unit test - delete topping successfully")
-    public void givenToppingId_whenDeleteTopping_thenReturn204() throws Exception{
+    @WithMockUser
+    public void givenToppingId_whenDeleteTopping_thenReturnSuccessfullyDeleted() throws Exception{
         // given - precondition or setup
         long id = 1L;
         DeletedToppingDto deletedToppingDto = DeletedToppingDto.builder()
@@ -172,6 +181,7 @@ public class ToppingControllerTests {
     // negative scenario - delete topping
     @Test
     @DisplayName("unit test - delete topping fail - topping not found!")
+    @WithMockUser
     public void givenNoExistTopping_whenDeleteTopping_thenToppingNotFoundException () throws Exception {
         // given - precondition or setup
         long id = 1L;
@@ -192,6 +202,7 @@ public class ToppingControllerTests {
 
     @Test
     @DisplayName("unit test - get most used toppings successfully")
+    @WithMockUser
     public void givenNothing_whenGetMostUsedToppings_thenReturnMostUsedToppingsList() throws Exception {
 
         // given - precondition or setup

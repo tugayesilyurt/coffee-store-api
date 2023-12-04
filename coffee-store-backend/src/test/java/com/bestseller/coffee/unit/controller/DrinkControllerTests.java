@@ -1,5 +1,6 @@
 package com.bestseller.coffee.unit.controller;
 
+import com.bestseller.coffee.config.SecurityConfig;
 import com.bestseller.coffee.constant.CoffeeConstants;
 import com.bestseller.coffee.controller.DrinkController;
 import com.bestseller.coffee.dto.request.drink.CreateDrinkDto;
@@ -16,7 +17,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
@@ -31,6 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(DrinkController.class)
+@Import(SecurityConfig.class)
 public class DrinkControllerTests {
 
     @Autowired
@@ -45,6 +49,7 @@ public class DrinkControllerTests {
     // positive scenario - create drink
     @Test
     @DisplayName("unit test - create drink successfully")
+    @WithMockUser
     public void givenDrinkObject_whenCreateDrink_thenReturnSuccessfullyMessage() throws Exception{
 
         // given - precondition or setup
@@ -72,6 +77,7 @@ public class DrinkControllerTests {
     // negative scenario - create drink
     @Test
     @DisplayName("unit test - create drink fail - already exist!")
+    @WithMockUser
     public void givenAlreadyExistDrink_whenCreateDrink_thenDrinkAlreadyExistException () throws Exception {
         // given - precondition or setup
         CreateDrinkDto drinktDto = CreateDrinkDto.builder()
@@ -95,6 +101,7 @@ public class DrinkControllerTests {
     // positive scenario - update drink
     @Test
     @DisplayName("unit test - update drink successfully")
+    @WithMockUser
     public void givenUpdatedDrink_whenUpdateDrink_thenReturnSuccessfullyMessage() throws Exception{
         // given - precondition or setup
         Long id = 1l;
@@ -123,6 +130,7 @@ public class DrinkControllerTests {
     // negative scenario - update drink
     @Test
     @DisplayName("unit test - update drink fail - drink not found!")
+    @WithMockUser
     public void givenNoExistDrink_whenUpdateDrink_thenDrinkNotFoundException() throws Exception {
         // given - precondition or setup
         Long id = 1l;
@@ -148,6 +156,7 @@ public class DrinkControllerTests {
     // positive scenario - delete drink
     @Test
     @DisplayName("unit test - delete drink successfully")
+    @WithMockUser
     public void givenDrinkId_whenDeleteDrink_thenReturnSuccessfullyMessage() throws Exception{
         // given - precondition or setup
         long id = 1L;
@@ -167,6 +176,7 @@ public class DrinkControllerTests {
     // negative scenario - delete drink
     @Test
     @DisplayName("unit test - delete drink fail - drink not found!")
+    @WithMockUser
     public void givenNoExistDrink_whenDeleteDrink_thenRuntimeException () throws Exception {
         // given - precondition or setup
         long id = 1L;

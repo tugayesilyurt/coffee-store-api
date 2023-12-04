@@ -23,6 +23,7 @@ import java.math.BigDecimal;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.hasSize;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -61,6 +62,7 @@ public class ToppingControllerIntegrationTests extends AbstractContainerBaseTest
 
         // when - action or behaviour that we are going test
         ResultActions response = mockMvc.perform(post("/v1/toppings")
+                .with(httpBasic("admin","coffee"))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(toppingDto)));
 
@@ -88,6 +90,7 @@ public class ToppingControllerIntegrationTests extends AbstractContainerBaseTest
 
         // when - action or behaviour that we are going test
         ResultActions response = mockMvc.perform(put("/v1/toppings/{id}", willSaveTopping.getId())
+                .with(httpBasic("admin","coffee"))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(toppingDto)));
 
@@ -110,6 +113,7 @@ public class ToppingControllerIntegrationTests extends AbstractContainerBaseTest
 
         // when - action or behaviour that we are going test
         ResultActions response = mockMvc.perform(delete("/v1/toppings/{id}", willSaveTopping.getId())
+                .with(httpBasic("admin","coffee"))
                 .contentType(MediaType.APPLICATION_JSON));
 
         // then - verify the result or output using assert statements
@@ -137,6 +141,7 @@ public class ToppingControllerIntegrationTests extends AbstractContainerBaseTest
 
         // when - action or behaviour that we are going test
         ResultActions response = mockMvc.perform(get("/v1/toppings/most-used")
+                .with(httpBasic("admin","coffee"))
                 .contentType(MediaType.APPLICATION_JSON));
 
         // then - verify the result or output using assert statements
