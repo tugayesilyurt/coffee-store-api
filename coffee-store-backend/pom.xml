@@ -26,6 +26,8 @@
 		<java.version>21</java.version>
 		<lombok.version>1.18.30</lombok.version>
 		<mysql.connector.version>8.0.33</mysql.connector.version>
+		<openapi.ui>2.2.0</openapi.ui>
+		<jacoco.version>0.8.11</jacoco.version>
 	</properties>
 
 	<dependencies>
@@ -141,13 +143,57 @@
 			<scope>test</scope>
 		</dependency>
 
+		<!-- ============================== -->
+		<!--            Swagger             -->
+		<!-- ============================== -->
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+			<version>${openapi.ui}</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
+		<finalName>coffee-store</finalName>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.jacoco</groupId>
+					<artifactId>jacoco-maven-plugin</artifactId>
+					<version>${jacoco.version}</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<configuration>
+					<includes>
+						<include>com/bestseller/coffee/controller/**</include>
+						<include>com/bestseller/coffee/service/**</include>
+						<include>com/bestseller/coffee/repository/**</include>
+					</includes>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>report</id>
+						<phase>test</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
