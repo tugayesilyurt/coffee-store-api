@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+
+  mysql:
+    image: mysql:latest
+    container_name: coffee-mysql
+    ports:
+      - "3306:3306"
+    restart: always
+    environment:
+      MYSQL_DATABASE: coffee
+      MYSQL_USER: coffee
+      MYSQL_PASSWORD: 123456
+      MYSQL_ROOT_PASSWORD: 123456
+
+  coffee-store-backend:
+    image: tugayesilyurt/coffee-store-backend
+    container_name: coffee-store-backend
+    build:
+      context: ./coffee-store-backend
+      dockerfile: Dockerfile
+    restart: on-failure
+    ports:
+      - "8090:8090"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/coffee
+      - SPRING_DATASOURCE_USERNAME=coffee
+      - SPRING_DATASOURCE_PASSWORD=123456
+      - SPRING_PROFILES_ACTIVE=test 
+    depends_on:
+      - mysql
