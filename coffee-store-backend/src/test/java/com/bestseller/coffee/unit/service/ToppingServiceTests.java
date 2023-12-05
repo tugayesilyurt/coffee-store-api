@@ -11,6 +11,7 @@ import com.bestseller.coffee.exception.ToppingNotFoundException;
 import com.bestseller.coffee.mapper.DtoToEntityMapper;
 import com.bestseller.coffee.repository.ToppingOrderRepository;
 import com.bestseller.coffee.repository.ToppingRepository;
+import com.bestseller.coffee.service.Impl.ToppingServiceImpl;
 import com.bestseller.coffee.service.ToppingService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -40,7 +41,7 @@ public class ToppingServiceTests {
     private ToppingOrderRepository toppingOrderRepository;
 
     @InjectMocks
-    private ToppingService toppingService;
+    private ToppingServiceImpl toppingService;
 
     private CreateToppingDto createToppingDto;
     private UpdateToppingDto updateToppingDto;

@@ -10,6 +10,7 @@ import com.bestseller.coffee.entity.ToppingOrder;
 import com.bestseller.coffee.repository.DrinkOrderRepository;
 import com.bestseller.coffee.repository.OrderRepository;
 import com.bestseller.coffee.repository.ToppingOrderRepository;
+import com.bestseller.coffee.service.Impl.OrderServiceImpl;
 import com.bestseller.coffee.service.OrderService;
 import com.bestseller.coffee.strategy.DiscountExecute;
 import org.junit.jupiter.api.DisplayName;
@@ -43,7 +44,7 @@ public class OrderServiceTests {
     private DiscountExecute discountExecute;
 
     @InjectMocks
-    private OrderService orderService;
+    private OrderServiceImpl orderService;
 
     @DisplayName("junit test - create order successfully")
     @Test

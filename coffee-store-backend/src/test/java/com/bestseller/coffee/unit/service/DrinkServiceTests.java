@@ -13,6 +13,7 @@ import com.bestseller.coffee.exception.DrinkNotFoundException;
 import com.bestseller.coffee.mapper.DtoToEntityMapper;
 import com.bestseller.coffee.repository.DrinkRepository;
 import com.bestseller.coffee.service.DrinkService;
+import com.bestseller.coffee.service.Impl.DrinkServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -36,7 +37,7 @@ public class DrinkServiceTests {
     private DrinkRepository drinkRepository;
 
     @InjectMocks
-    private DrinkService drinkService;
+    private DrinkServiceImpl drinkService;
 
     private CreateDrinkDto createDrinkDto;
     private UpdateDrinkDto updateDrinkDto;
