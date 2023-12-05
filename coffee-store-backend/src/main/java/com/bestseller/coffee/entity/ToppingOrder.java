@@ -1,8 +1,6 @@
 package com.bestseller.coffee.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -16,19 +14,17 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class ToppingOrder extends BaseEntity{
 
-    @Column(name = "order_id")
-    private Long orderId;
-
     @Column(name = "topping_id")
     private Long toppingId;
-
-    @Column(name = "drink_id")
-    private Long drinkId;
 
     @Column(name = "topping_amount")
     private BigDecimal toppingAmount;
 
     @Column(name = "topping_name")
     private String toppingName;
+
+    @ManyToOne(fetch = FetchType.LAZY,cascade=CascadeType.ALL)
+    @JoinColumn(name="drink_order_id",referencedColumnName="id", nullable=false)
+    private DrinkOrder drinkOrder;
 
 }

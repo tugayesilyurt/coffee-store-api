@@ -3,6 +3,8 @@ package com.bestseller.coffee.integration.controller;
 import com.bestseller.coffee.constant.CoffeeConstants;
 import com.bestseller.coffee.dto.request.topping.CreateToppingDto;
 import com.bestseller.coffee.dto.request.topping.UpdateToppingDto;
+import com.bestseller.coffee.entity.DrinkOrder;
+import com.bestseller.coffee.entity.Order;
 import com.bestseller.coffee.entity.Topping;
 import com.bestseller.coffee.entity.ToppingOrder;
 import com.bestseller.coffee.integration.AbstractContainerBaseTest;
@@ -129,12 +131,24 @@ public class ToppingControllerIntegrationTests extends AbstractContainerBaseTest
     public void givenNothing_whenGetMostUsedToppings_thenReturnMostUsedToppingsDto() throws Exception{
 
         // given - precondition or setup
+        Order order = Order.builder()
+                .drinksCount(1)
+                .toppingsCount(0)
+                .totalAmount(new BigDecimal("20"))
+                .discountedAmount(new BigDecimal("15"))
+                .discount(new BigDecimal("5")).build();
+
+        DrinkOrder drinkOrder = DrinkOrder.builder()
+                .drinkId(1l)
+                .drinkAmount(new BigDecimal("5"))
+                .drinkName("Black Coffee")
+                .order(order).build();
+
         ToppingOrder toppingOrder = ToppingOrder.builder()
-                .orderId(1l)
                 .toppingId(1l)
                 .toppingAmount(new BigDecimal("2"))
                 .toppingName("Milk")
-                .drinkId(1l)
+                .drinkOrder(drinkOrder)
                 .build();
 
         toppingOrderRepository.save(toppingOrder);

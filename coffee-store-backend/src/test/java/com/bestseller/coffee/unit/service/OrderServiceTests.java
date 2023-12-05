@@ -7,11 +7,8 @@ import com.bestseller.coffee.dto.response.order.CreatedOrderDto;
 import com.bestseller.coffee.entity.DrinkOrder;
 import com.bestseller.coffee.entity.Order;
 import com.bestseller.coffee.entity.ToppingOrder;
-import com.bestseller.coffee.repository.DrinkOrderRepository;
 import com.bestseller.coffee.repository.OrderRepository;
-import com.bestseller.coffee.repository.ToppingOrderRepository;
 import com.bestseller.coffee.service.Impl.OrderServiceImpl;
-import com.bestseller.coffee.service.OrderService;
 import com.bestseller.coffee.strategy.DiscountExecute;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -33,12 +30,6 @@ public class OrderServiceTests {
 
     @Mock
     private OrderRepository orderRepository;
-
-    @Mock
-    private DrinkOrderRepository drinkOrderRepository;
-
-    @Mock
-    private ToppingOrderRepository toppingOrderRepository;
 
     @Mock
     private DiscountExecute discountExecute;
@@ -69,32 +60,29 @@ public class OrderServiceTests {
                 .totalAmount(new BigDecimal("20"))
                 .build();
 
+        ToppingOrder toppingOrder = ToppingOrder.builder()
+                .toppingId(1l)
+                .toppingAmount(new BigDecimal("2"))
+                .toppingName("Milk")
+                .build();
+
+        DrinkOrder drinkOrder = DrinkOrder.builder()
+                .toppingOrders(List.of(toppingOrder))
+                .drinkId(drinkOrderDto.getDrinkId())
+                .drinkAmount(drinkOrderDto.getDrinkAmount())
+                .drinkName(drinkOrderDto.getDrinkName()).build();
+
         Order order = Order.builder()
+                .drinkOrders(List.of(drinkOrder))
                 .drinksCount(1)
                 .toppingsCount(0)
                 .totalAmount(new BigDecimal("20"))
                 .discountedAmount(new BigDecimal("15"))
                 .discount(new BigDecimal("5")).build();
 
-        DrinkOrder drinkOrder = DrinkOrder.builder()
-                .drinkId(drinkOrderDto.getDrinkId())
-                .orderId(order.getId())
-                .drinkAmount(drinkOrderDto.getDrinkAmount())
-                .drinkName(drinkOrderDto.getDrinkName()).build();
-
-        ToppingOrder toppingOrder = ToppingOrder.builder()
-                .orderId(order.getId())
-                .toppingId(1l)
-                .toppingAmount(new BigDecimal("2"))
-                .toppingName("Milk")
-                .drinkId(drinkOrder.getId())
-                .build();
-
         willDoNothing().given(discountExecute).execute(createdOrderDto);
 
         given(orderRepository.save(any(Order.class))).willReturn(order);
-        given(drinkOrderRepository.save(any(DrinkOrder.class))).willReturn(drinkOrder);
-        given(toppingOrderRepository.save(any(ToppingOrder.class))).willReturn(toppingOrder);
 
         // when -  action or the behaviour that we are going test
         CreatedOrderDto response = orderService.createOrder(createOrderDto);

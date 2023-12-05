@@ -1,6 +1,7 @@
 package com.bestseller.coffee.unit.repository;
 
 import com.bestseller.coffee.entity.DrinkOrder;
+import com.bestseller.coffee.entity.Order;
 import com.bestseller.coffee.repository.DrinkOrderRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,11 +23,18 @@ public class DrinkOrderRepositoryTests {
     public void givenOrderObject_whenSave_thenReturnSavedOrder(){
 
         //given - precondition or setup
+        Order order = Order.builder()
+                .drinksCount(1)
+                .toppingsCount(0)
+                .totalAmount(new BigDecimal("20"))
+                .discountedAmount(new BigDecimal("15"))
+                .discount(new BigDecimal("5")).build();
+
         DrinkOrder drinkOrder = DrinkOrder.builder()
                 .drinkId(1l)
-                .orderId(1l)
                 .drinkAmount(new BigDecimal("5"))
-                .drinkName("Black Coffee").build();
+                .drinkName("Black Coffee")
+                .order(order).build();
 
         // when - action or the behaviour that we are going test
         DrinkOrder savedDrinkOrder = drinkOrderRepository.save(drinkOrder);

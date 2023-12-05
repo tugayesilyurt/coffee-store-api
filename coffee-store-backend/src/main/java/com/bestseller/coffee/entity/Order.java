@@ -1,11 +1,11 @@
 package com.bestseller.coffee.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "orders")
@@ -30,5 +30,8 @@ public class Order extends BaseEntity{
 
     @Column(name = "discount")
     private BigDecimal discount;
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<DrinkOrder> drinkOrders;
 
 }
