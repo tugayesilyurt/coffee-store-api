@@ -10,9 +10,8 @@ import com.bestseller.coffee.entity.Drink;
 import com.bestseller.coffee.enums.Status;
 import com.bestseller.coffee.exception.DrinkAlreadyExistException;
 import com.bestseller.coffee.exception.DrinkNotFoundException;
-import com.bestseller.coffee.mapper.DtoToEntityMapper;
+import com.bestseller.coffee.mapper.DrinkConverter;
 import com.bestseller.coffee.repository.DrinkRepository;
-import com.bestseller.coffee.service.DrinkService;
 import com.bestseller.coffee.service.Impl.DrinkServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -61,7 +60,7 @@ public class DrinkServiceTests {
     @Test
     public void givenDrinkDtoObject_whenCreateDrink_thenReturnSuccessfullyMessage(){
         // given - precondition or setup
-        Drink drink = DtoToEntityMapper.createDrinkFromDto(createDrinkDto);
+        Drink drink = DrinkConverter.createDrinkFromDto(createDrinkDto);
 
         given(drinkRepository.findByStatusAndName(Status.ACTIVE,drink.getName()))
                 .willReturn(Optional.empty());
@@ -80,7 +79,7 @@ public class DrinkServiceTests {
     @Test
     public void givenExistingDrink_whenCreateDrink_thenThrowRuntimeException(){
         // given - precondition or setup
-        Drink drink = DtoToEntityMapper.createDrinkFromDto(createDrinkDto);
+        Drink drink = DrinkConverter.createDrinkFromDto(createDrinkDto);
 
         given(drinkRepository.findByStatusAndName(Status.ACTIVE,drink.getName()))
                 .willReturn(Optional.of(drink));

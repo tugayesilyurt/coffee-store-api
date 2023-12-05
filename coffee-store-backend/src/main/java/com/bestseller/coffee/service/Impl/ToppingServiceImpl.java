@@ -8,7 +8,7 @@ import com.bestseller.coffee.entity.Topping;
 import com.bestseller.coffee.enums.Status;
 import com.bestseller.coffee.exception.ToppingAlreadyExistException;
 import com.bestseller.coffee.exception.ToppingNotFoundException;
-import com.bestseller.coffee.mapper.DtoToEntityMapper;
+import com.bestseller.coffee.mapper.ToppingConverter;
 import com.bestseller.coffee.repository.ToppingOrderRepository;
 import com.bestseller.coffee.repository.ToppingRepository;
 import com.bestseller.coffee.service.ToppingService;
@@ -28,7 +28,7 @@ public class ToppingServiceImpl implements ToppingService {
 
     @Override
     public CreatedToppingDto createTopping(CreateToppingDto createToppingDto) {
-        Topping topping = DtoToEntityMapper.createToppingFromDto(createToppingDto);
+        Topping topping = ToppingConverter.createToppingFromDto(createToppingDto);
 
         Optional<Topping> existingTopping = toppingRepository.findByStatusAndName(Status.ACTIVE, topping.getName());
         if (existingTopping.isPresent()) {

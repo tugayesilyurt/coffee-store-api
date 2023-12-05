@@ -10,7 +10,7 @@ import com.bestseller.coffee.entity.Drink;
 import com.bestseller.coffee.enums.Status;
 import com.bestseller.coffee.exception.DrinkAlreadyExistException;
 import com.bestseller.coffee.exception.DrinkNotFoundException;
-import com.bestseller.coffee.mapper.DtoToEntityMapper;
+import com.bestseller.coffee.mapper.DrinkConverter;
 import com.bestseller.coffee.repository.DrinkRepository;
 import com.bestseller.coffee.service.DrinkService;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +28,7 @@ public class DrinkServiceImpl implements DrinkService {
 
     @Override
     public CreatedDrinkDto createDrink(CreateDrinkDto createDrinkDto) {
-        Drink drink = DtoToEntityMapper.createDrinkFromDto(createDrinkDto);
+        Drink drink = DrinkConverter.createDrinkFromDto(createDrinkDto);
 
         Optional<Drink> existingDrink = drinkRepository.findByStatusAndName(Status.ACTIVE, drink.getName());
         if (existingDrink.isPresent()) {

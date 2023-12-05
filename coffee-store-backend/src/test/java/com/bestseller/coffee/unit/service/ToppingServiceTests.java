@@ -8,11 +8,10 @@ import com.bestseller.coffee.entity.Topping;
 import com.bestseller.coffee.enums.Status;
 import com.bestseller.coffee.exception.ToppingAlreadyExistException;
 import com.bestseller.coffee.exception.ToppingNotFoundException;
-import com.bestseller.coffee.mapper.DtoToEntityMapper;
+import com.bestseller.coffee.mapper.ToppingConverter;
 import com.bestseller.coffee.repository.ToppingOrderRepository;
 import com.bestseller.coffee.repository.ToppingRepository;
 import com.bestseller.coffee.service.Impl.ToppingServiceImpl;
-import com.bestseller.coffee.service.ToppingService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -65,7 +64,7 @@ public class ToppingServiceTests {
     @Test
     public void givenToppingDtoObject_whenCreateTopping_thenReturnSuccessfullyMessage(){
         // given - precondition or setup
-        Topping topping = DtoToEntityMapper.createToppingFromDto(createToppingDto);
+        Topping topping = ToppingConverter.createToppingFromDto(createToppingDto);
 
         given(toppingRepository.findByStatusAndName(Status.ACTIVE,topping.getName()))
                 .willReturn(Optional.empty());
@@ -84,7 +83,7 @@ public class ToppingServiceTests {
     @Test
     public void givenExistingTopping_whenCreateTopping_thenThrowToppingAlreadyExistException(){
         // given - precondition or setup
-        Topping topping = DtoToEntityMapper.createToppingFromDto(createToppingDto);
+        Topping topping = ToppingConverter.createToppingFromDto(createToppingDto);
 
         given(toppingRepository.findByStatusAndName(Status.ACTIVE,topping.getName()))
                 .willReturn(Optional.of(topping));
@@ -102,7 +101,7 @@ public class ToppingServiceTests {
     @Test
     public void givenToppingDtoObject_whenUpdateTopping_thenReturnSuccessfullyMessage(){
         // given - precondition or setup
-        Topping savedTopping = DtoToEntityMapper.createToppingFromDto(createToppingDto);
+        Topping savedTopping = ToppingConverter.createToppingFromDto(createToppingDto);
 
         Long id = 1l;
         given(toppingRepository.findByStatusAndId(Status.ACTIVE,id))
@@ -143,7 +142,7 @@ public class ToppingServiceTests {
     public void givenToppingId_whenDeleteTopping_thenReturnSuccessfullyMessage(){
         // given - precondition or setup
         Long id = 1l;
-        Topping savedTopping = DtoToEntityMapper.createToppingFromDto(createToppingDto);
+        Topping savedTopping = ToppingConverter.createToppingFromDto(createToppingDto);
 
         given(toppingRepository.findByStatusAndId(Status.ACTIVE,id))
                 .willReturn(Optional.of(savedTopping));

@@ -1,11 +1,11 @@
 package com.bestseller.coffee.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "drinks_order")
@@ -16,9 +16,6 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class DrinkOrder extends BaseEntity{
 
-    @Column(name = "order_id")
-    private Long orderId;
-
     @Column(name = "drink_id")
     private Long drinkId;
 
@@ -27,5 +24,12 @@ public class DrinkOrder extends BaseEntity{
 
     @Column(name = "drink_name")
     private String drinkName;
+
+    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @JoinColumn(name="order_id",referencedColumnName="id",nullable=false)
+    private Order order;
+
+    @OneToMany(mappedBy = "drinkOrder", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<ToppingOrder> toppingOrders;
 
 }
