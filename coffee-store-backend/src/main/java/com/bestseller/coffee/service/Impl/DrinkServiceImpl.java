@@ -36,6 +36,7 @@ public class DrinkServiceImpl implements DrinkService {
         }
 
         drinkRepository.save(drink);
+        log.info("drink created successfully!");
         return CreatedDrinkDto.builder().message(CoffeeConstants.createdDrink).build();
     }
 
@@ -49,7 +50,7 @@ public class DrinkServiceImpl implements DrinkService {
         savedDrink.get().setAmount(updateDrinkDto.getAmount());
 
         drinkRepository.save(savedDrink.get());
-
+        log.info("drink updated successfully!");
         return UpdatedDrinkDto.builder().message(CoffeeConstants.updatedDrink).build();
 
     }
@@ -63,7 +64,7 @@ public class DrinkServiceImpl implements DrinkService {
         savedDrink.get().setStatus(Status.PASSIVE);
 
         drinkRepository.save(savedDrink.get());
-
+        log.info("drink deleted successfully!");
         return DeletedDrinkDto.builder().message(CoffeeConstants.deletedDrink).build();
     }
 

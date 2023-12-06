@@ -13,6 +13,7 @@ import com.bestseller.coffee.repository.ToppingOrderRepository;
 import com.bestseller.coffee.repository.ToppingRepository;
 import com.bestseller.coffee.service.ToppingService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ToppingServiceImpl implements ToppingService {
 
     private final ToppingRepository toppingRepository;
@@ -36,6 +38,7 @@ public class ToppingServiceImpl implements ToppingService {
         }
 
         toppingRepository.save(topping);
+        log.info("topping created successfully!");
         return CreatedToppingDto.builder().message(CoffeeConstants.createdTopping)
                 .build();
     }
@@ -50,7 +53,7 @@ public class ToppingServiceImpl implements ToppingService {
         savedTopping.get().setAmount(updateToppingDto.getAmount());
 
         toppingRepository.save(savedTopping.get());
-
+        log.info("topping updated successfully!");
         return UpdatedToppingDto.builder().message(CoffeeConstants.updatedTopping).build();
 
     }
@@ -64,6 +67,7 @@ public class ToppingServiceImpl implements ToppingService {
         savedTopping.get().setStatus(Status.PASSIVE);
 
         toppingRepository.save(savedTopping.get());
+        log.info("topping deleted successfully!");
         return DeletedToppingDto.builder().message(CoffeeConstants.deletedTopping).build();
     }
 

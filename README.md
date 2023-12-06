@@ -4,6 +4,15 @@ Online coffee place startup business, where users can place drinks with
 toppings orders and admins can create/update/delete drinks/toppings and have access to the most used
 toppings.
 
+- `Admin user can create/update/delete drinks/toppings and have access to the most used
+topping`
+- `You can order drinks with any of the topping combinations.`
+- `If the total cost of the cart is more than 12 euros, there should be a 25% discount.`
+- `If there are 3 or more drinks in the cart, the one with the lowest amount (including toppings)
+should be free.`
+- `If the cart is eligible for both promotions, the promotion with the lowest cart amount should be
+used and the other one should be ignored.`
+
 Technologies
 ------------
 - `Spring Boot 3.2.0`
