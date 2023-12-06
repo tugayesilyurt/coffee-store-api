@@ -1,6 +1,7 @@
 package com.bestseller.coffee.strategy;
 
 import com.bestseller.coffee.dto.response.order.CreatedOrderDto;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -8,6 +9,7 @@ import java.util.Collections;
 import java.util.Objects;
 
 @Component
+@Slf4j
 public class NMoreDrinksDiscountImpl implements IDiscount{
 
     private static final int NOrMoreDrinks = 3;
@@ -16,7 +18,7 @@ public class NMoreDrinksDiscountImpl implements IDiscount{
     public void execute(CreatedOrderDto createdOrderDto){
 
         if(createdOrderDto.getCartList().size() >= NOrMoreDrinks){
-
+            log.info("n or more drinks discount execute!");
             //if toppinglist null --> set empty
             createdOrderDto.getCartList().stream().forEach(drink -> {
                 if(Objects.isNull(drink.getToppingOrderList()))

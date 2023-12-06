@@ -60,6 +60,7 @@ public class OrderServiceImpl implements OrderService {
 
         Order order = OrderConverter.createOrderFromDto(createdOrderDto);
         orderRepository.save(order);
+        log.info("order created successfully!");
     }
 
 }
