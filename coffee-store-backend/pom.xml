@@ -23,7 +23,7 @@
 	</developers>
 
 	<properties>
-		<java.version>21</java.version>
+		<java.version>17</java.version>
 		<lombok.version>1.18.30</lombok.version>
 		<mysql.connector.version>8.0.33</mysql.connector.version>
 		<openapi.ui>2.2.0</openapi.ui>
