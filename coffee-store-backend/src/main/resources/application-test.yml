@@ -7,7 +7,7 @@ spring:
     problem details:
       enabled: true
   datasource:
-    url: jdbc:mysql://mysql:3306/coffee
+    url: jdbc:mysql://host.docker.internal:3306/coffee
     username: coffee
     password: 123456
   jpa:
