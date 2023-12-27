@@ -4,7 +4,8 @@ services:
   mysql:
     image: 'mysql:latest'
     container_name: coffee-mysql
-    restart: on-failure
+    restart: always
+    network_mode: bridge
     ports:
       - '3306:3306'
     environment:
@@ -16,11 +17,12 @@ services:
   sonarqube:
     image: sonarqube:10.3.0-community
     container_name: sonar
-    restart: on-failure
+    restart: always
+    network_mode: bridge
     depends_on:
       - postgres
     environment:
-      SONAR_JDBC_URL: 'jdbc:postgresql://postgres:5432/sonar'
+      SONAR_JDBC_URL: 'jdbc:postgresql://host.docker.internal:5432/sonar'
       SONAR_JDBC_USERNAME: sonar
       SONAR_JDBC_PASSWORD: sonar
     volumes:
@@ -33,7 +35,8 @@ services:
   postgres:
     image: postgres
     container_name: postgres
-    restart: on-failure
+    restart: always
+    network_mode: bridge
     volumes:
       - './postgres/postgres_data:/var/lib/postgresql/data'
     ports:
@@ -44,16 +47,24 @@ services:
       POSTGRES_PASSWORD: sonar
 
   jenkins:
-    image: jenkins/jenkins:lts
+    image: myjenkins-tugayesilyurt
     container_name: jenkins
+    network_mode: bridge
+    restart: always
+    build: 
+       dockerfile: Jenkins-Dockerfile
     ports:
       - "8080:8080"
       - "50000:50000"
     volumes:
+      - $PWD:$PWD
       - ./jenkins:/var/jenkins_home
-      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/run/docker.sock.raw:/var/run/docker.sock
+      - ~/.m2:/root/.m2
     environment:
       - JAVA_OPTS=-Djenkins.install.runSetupWizard=false
       - JENKINS_LANG=en_US.UTF-8 
-    restart: always
+    
+
+
 
