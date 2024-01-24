@@ -13,6 +13,10 @@ should be free.`
 - `If the cart is eligible for both promotions, the promotion with the lowest cart amount should be
 used and the other one should be ignored.`
 
+## Read this article on Medium
+
+[Medium Article](https://medium.com/devops-dev/optimizing-code-quality-and-continuous-integration-with-spring-boot-3-jacoco-sonarqube-and-e386079a55c5)
+
 Technologies
 ------------
 - `Spring Boot 3.2.0`
